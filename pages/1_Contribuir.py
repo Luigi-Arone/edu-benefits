@@ -53,6 +53,18 @@ st.markdown(
             border-color: {BORDER} !important;
         }}
         #MainMenu {{ visibility: hidden; }}
+                header[data-testid="stHeader"] {{
+            background-color: {BG} !important;
+        }}
+        div[data-testid="stToolbar"] {{
+            background-color: {BG} !important;
+        }}
+        header[data-testid="stHeader"] * {{
+            color: {TEXT} !important;
+        }}
+        div[data-testid="stToolbar"] * {{
+            color: {TEXT} !important;
+        }}
     </style>
     """,
     unsafe_allow_html=True,
