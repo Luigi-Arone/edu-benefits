@@ -80,6 +80,12 @@ st.markdown(
         div[data-testid="stToolbar"] * {{
             color: {TEXT} !important;
         }}
+        details, details > summary,
+        details > div, details > div > div {{
+            background-color: {BG2} !important;
+            color: {TEXT} !important;
+            border-color: {BORDER} !important;
+        }}
     </style>
     """,
     unsafe_allow_html=True,
