@@ -3,6 +3,61 @@ import json
 import os
 from datetime import datetime
 
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = False
+
+DARK = st.session_state.dark_mode
+
+if DARK:
+    BG          = "#0f1117"
+    BG2         = "#1a1d27"
+    TEXT        = "#f0f2f8"
+    TEXT_MUTED  = "#b0b4cc"
+    BORDER      = "#2e3044"
+else:
+    BG          = "#ffffff"
+    BG2         = "#f8f9fa"
+    TEXT        = "#1a1a1a"
+    TEXT_MUTED  = "#555555"
+    BORDER      = "#e0e0e0"
+
+st.markdown(
+    f"""
+    <style>
+        .stApp, .stApp > div, .block-container {{
+            background-color: {BG} !important;
+            color: {TEXT} !important;
+        }}
+        section[data-testid="stSidebar"],
+        section[data-testid="stSidebar"] > div {{
+            background-color: {BG2} !important;
+        }}
+        p, span, div, li, label {{
+            color: {TEXT} !important;
+        }}
+        h1, h2, h3, h4 {{
+            color: {TEXT} !important;
+        }}
+        .stCaption, small,
+        [data-testid="stCaptionContainer"] p {{
+            color: {TEXT_MUTED} !important;
+        }}
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea,
+        .stSelectbox > div > div {{
+            background-color: {BG2} !important;
+            color: {TEXT} !important;
+            border-color: {BORDER} !important;
+        }}
+        hr {{
+            border-color: {BORDER} !important;
+        }}
+        #MainMenu {{ visibility: hidden; }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.set_page_config(
     page_title="Contribuir — EduBenefits",
     page_icon="🎓",
