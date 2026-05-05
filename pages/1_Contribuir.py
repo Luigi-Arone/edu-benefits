@@ -44,10 +44,18 @@ st.markdown(
         }}
         .stTextInput > div > div > input,
         .stTextArea > div > div > textarea,
-        .stSelectbox > div > div {{
+        .stSelectbox > div > div,
+        .stMultiSelect > div > div,
+        [data-baseweb="select"] > div,
+        [data-baseweb="popover"],
+        [data-baseweb="menu"],
+        [data-baseweb="option"] {{
             background-color: {BG2} !important;
             color: {TEXT} !important;
             border-color: {BORDER} !important;
+        }}
+        [data-baseweb="option"]:hover {{
+            background-color: {BORDER} !important;
         }}
         hr {{
             border-color: {BORDER} !important;
