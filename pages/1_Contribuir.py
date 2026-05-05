@@ -80,6 +80,16 @@ st.markdown(
         div[data-testid="stToolbar"] * {{
             color: {TEXT} !important;
         }}
+        div[data-testid="stExpander"],
+        div[data-testid="stExpander"] > div {{
+            background-color: {BG2} !important;
+            border-color: {BORDER} !important;
+        }}
+        div[data-testid="stExpander"] summary,
+        div[data-testid="stExpander"] summary span,
+        div[data-testid="stExpander"] p {{
+            color: {TEXT} !important;
+        }}
     </style>
     """,
     unsafe_allow_html=True,
