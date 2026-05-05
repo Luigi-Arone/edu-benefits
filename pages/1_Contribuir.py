@@ -57,6 +57,13 @@ st.markdown(
         [data-baseweb="option"]:hover {{
             background-color: {BORDER} !important;
         }}
+        div[data-baseweb="popover"] > div,
+        div[data-baseweb="popover"] ul,
+        div[data-baseweb="popover"] li,
+        div[data-baseweb="popover"] li > div {{
+            background-color: {BG2} !important;
+            color: {TEXT} !important;
+        }}
         hr {{
             border-color: {BORDER} !important;
         }}
