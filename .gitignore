@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv
+.venv
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Contribuições locais (dados efêmeros)
+contributions.json
+
+# macOS
+.DS_Store
