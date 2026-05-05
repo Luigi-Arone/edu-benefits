@@ -231,7 +231,10 @@ if email:
                             padding: 16px;
                             margin-bottom: 12px;
                             opacity: {opacity};
-                            min-height: 160px;
+                            height: 200px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
                         ">
                             <div style="font-size:15px;font-weight:600;margin-bottom:6px;color:{TEXT};">
                                 {service['logo']} {service['name']}{badge}
