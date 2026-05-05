@@ -1,7 +1,5 @@
 import streamlit as st
-import json
-import os
-from datetime import datetime
+from supabase import create_client
 
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
@@ -68,7 +66,7 @@ st.markdown(
             border-color: {BORDER} !important;
         }}
         #MainMenu {{ visibility: hidden; }}
-                header[data-testid="stHeader"] {{
+        header[data-testid="stHeader"] {{
             background-color: {BG} !important;
         }}
         div[data-testid="stToolbar"] {{
@@ -97,6 +95,23 @@ st.set_page_config(
     layout="centered",
 )
 
+# --- Supabase ---
+@st.cache_resource
+def get_supabase():
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_KEY"]
+    return create_client(url, key)
+
+def save_contribution(entry: dict):
+    db = get_supabase()
+    db.table("contributions").insert(entry).execute()
+
+def load_contributions():
+    db = get_supabase()
+    res = db.table("contributions").select("*").order("created_at", desc=True).limit(20).execute()
+    return res.data or []
+
+
 st.title("🤝 Contribuir")
 st.write(
     "Conhece uma universidade ou serviço que deveria estar na lista? "
@@ -104,23 +119,6 @@ st.write(
 )
 
 st.divider()
-
-CONTRIB_FILE = "contributions.json"
-
-
-def load_contributions():
-    if os.path.exists(CONTRIB_FILE):
-        with open(CONTRIB_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
-
-
-def save_contribution(entry: dict):
-    data = load_contributions()
-    data.append(entry)
-    with open(CONTRIB_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
 
 tab_domain, tab_service = st.tabs(["🏫 Sugerir domínio de instituição", "🛠️ Sugerir novo serviço"])
 
@@ -155,16 +153,14 @@ with tab_domain:
             elif "@" in inst_domain or " " in inst_domain:
                 st.error("Insira apenas o domínio, sem @ ou espaços. Ex: uerj.br")
             else:
-                entry = {
+                save_contribution({
                     "type": "domain",
                     "name": inst_name,
                     "domain": inst_domain.lower().strip(),
                     "inst_type": inst_type,
                     "country": inst_country,
                     "note": inst_note,
-                    "created_at": datetime.now().isoformat(),
-                }
-                save_contribution(entry)
+                })
                 st.success(f"✅ Obrigado! O domínio `{inst_domain}` foi registrado para revisão.")
 
 # --- Tab 2: Sugerir serviço ---
@@ -198,29 +194,26 @@ with tab_service:
             if not svc_name or not svc_link:
                 st.error("Preencha pelo menos o nome e o link do serviço.")
             else:
-                entry = {
+                save_contribution({
                     "type": "service",
                     "name": svc_name,
                     "link": svc_link,
-                    "desc": svc_desc,
+                    "description": svc_desc,
                     "cats": svc_cats,
                     "eligible": svc_eligible,
                     "note": svc_note,
-                    "created_at": datetime.now().isoformat(),
-                }
-                save_contribution(entry)
+                })
                 st.success(f"✅ Obrigado! O serviço **{svc_name}** foi registrado para revisão.")
 
 st.divider()
 
-# --- Visualizar contribuições recentes (opcional, pode remover) ---
 with st.expander("📋 Ver contribuições enviadas"):
     contribs = load_contributions()
     if not contribs:
         st.caption("Nenhuma contribuição ainda.")
     else:
-        for c in reversed(contribs[-20:]):
+        for c in contribs:
             if c["type"] == "domain":
-                st.markdown(f"🏫 **{c['name']}** — `{c['domain']}` ({c['inst_type']}) — {c['created_at'][:10]}")
+                st.markdown(f"🏫 **{c['name']}** — `{c.get('domain', '')}` ({c.get('inst_type', '')}) — {c['created_at'][:10]}")
             else:
-                st.markdown(f"🛠️ **{c['name']}** — [{c['link']}]({c['link']}) — {c['created_at'][:10]}")
+                st.markdown(f"🛠️ **{c['name']}** — [{c.get('link', '')}]({c.get('link', '')}) — {c['created_at'][:10]}")
