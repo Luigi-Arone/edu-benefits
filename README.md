@@ -2,6 +2,8 @@
 
 Verifique quais softwares e serviços oferecem planos gratuitos ou descontos para o seu email institucional (universidades, institutos federais, startups).
 
+> 🚀 **[Acesse o dashboard ao vivo](https://edubenefits.streamlit.app)**
+
 ## Funcionalidades
 
 - **Verificador** — detecta automaticamente se o domínio é acadêmico ou de startup, cruza com a base de serviços e exibe elegibilidade
